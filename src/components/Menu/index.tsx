@@ -1,41 +1,61 @@
+import { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
-import { Product, ProductImage, ProductDetails, ProductSeparator } from './styles';
+import { ProductContainer, ProductImage, ProductDetails, ProductSeparator } from './styles';
 
 import { products } from '../../mocks/products';
 import { Text } from '../Text';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PlusCircle } from '../Icons/PlusCircle';
+import { ProductModal } from '../ProductModal';
+
+import { Product } from '../../types/Product';
 
 export function Menu() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedProduct, setIsSelectedProduct] = useState<Product | null>(null);
+
+  function handleOpenModal(product: Product) {
+    setIsModalVisible(true);
+    setIsSelectedProduct(product);
+  }
+
   return (
-    <FlatList
-      data={products}
-      style={{ marginTop: 32 }}
-      contentContainerStyle={{ paddingHorizontal: 24 }}
-      keyExtractor={product => product._id}
-      ItemSeparatorComponent={ProductSeparator}
-      renderItem={({ item: product }) => (
-        <Product>
-          <ProductImage
-            source={{
-              uri: `http://192.168.0.28:3001/uploads/${product.imagePath}`
-            }}
-          />
+    <>
+      <ProductModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        product={selectedProduct}
+      />
 
-          <ProductDetails>
-            <Text weight="600">{product.name}</Text>
-            <Text size={14} color="#666666">
-              {product.description}
-            </Text>
-            <Text size={14} weight="600">{formatCurrency(product.price)}</Text>
-          </ProductDetails>
+      <FlatList
+        data={products}
+        style={{ marginTop: 32 }}
+        contentContainerStyle={{ paddingHorizontal: 24 }}
+        keyExtractor={product => product._id}
+        ItemSeparatorComponent={ProductSeparator}
+        renderItem={({ item: product }) => (
+          <ProductContainer onPress={() => handleOpenModal(product)}>
+            <ProductImage
+              source={{
+                uri: `http://192.168.0.28:3001/uploads/${product.imagePath}`
+              }}
+            />
 
-          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-            <PlusCircle />
-          </TouchableOpacity>
-        </Product>
-      )}
-    />
+            <ProductDetails>
+              <Text weight="600">{product.name}</Text>
+              <Text size={14} color="#666666">
+                {product.description}
+              </Text>
+              <Text size={14} weight="600">{formatCurrency(product.price)}</Text>
+            </ProductDetails>
+
+            <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+              <PlusCircle />
+            </TouchableOpacity>
+          </ProductContainer>
+        )}
+      />
+    </>
   );
 }
