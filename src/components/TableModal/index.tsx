@@ -16,6 +16,11 @@ interface TableModalProps {
 export function TableModal({ visible, onClose, onSave }: TableModalProps) {
   const [table, setTable] = useState('');
 
+  function handleSave() {
+    setTable('');
+    onSave(table);
+  }
+
   return (
     <Modal
       visible={visible}
@@ -41,7 +46,7 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
             />
 
             <Button
-              onPress={() => onSave(table)}
+              onPress={handleSave}
               disabled={table.length === 0}
             >
               Salvar
