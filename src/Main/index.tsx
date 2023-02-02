@@ -3,14 +3,13 @@ import { useState } from 'react';
 import { Container,
   CategoriesContainer,
   MenuContainer,
-  Footer,
-  FooterContainer
 } from './styles';
 
 import { Header } from '../components/Header';
 import { Categories } from '../components/Categories';
 import { Menu } from '../components/Menu';
 import { Button } from '../components/Button';
+import { Footer } from '../components/Footer';
 import { TableModal } from '../components/TableModal';
 
 export function Main() {
@@ -43,13 +42,11 @@ export function Main() {
         </MenuContainer>
       </Container>
       <Footer>
-        <FooterContainer>
-          {!selectedTable && (
-            <Button onPress={() => setIsTableModalVisible(true)}>
-              Novo Pedido
-            </Button>
-          )}
-        </FooterContainer>
+        {!selectedTable && (
+          <Button onPress={() => setIsTableModalVisible(true)}>
+            Novo Pedido
+          </Button>
+        )}
       </Footer>
 
       <TableModal
