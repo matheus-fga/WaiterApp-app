@@ -38,9 +38,3 @@ export const Ingredient = styled.View`
   margin-bottom: 4px;
   padding: 16px;
 `;
-
-export const PriceContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
