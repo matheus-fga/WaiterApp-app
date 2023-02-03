@@ -3,7 +3,7 @@ import { FlatList, Modal } from 'react-native';
 import { Text } from '../Text';
 import { Close } from '../Icons/Close';
 import { Footer } from '../Footer';
-import { PriceContainer } from '../PriceContainer';
+import { SummaryWithAction } from '../SummaryWithAction';
 
 import { Product } from '../../types/Product';
 
@@ -73,9 +73,9 @@ export function ProductModal({ visible, onClose, product }: ProductModal) {
       </ModalBody>
 
       <Footer>
-        <PriceContainer
-          price={['Preço', product.price]}
-          button={['Adiconar ao pedido', () => alert('Adiconado ao pedido')]}
+        <SummaryWithAction
+          summary={['Preço', product.price]}
+          action={['Adiconar ao pedido', () => alert('Adiconado ao pedido')]}
         />
       </Footer>
     </Modal>
