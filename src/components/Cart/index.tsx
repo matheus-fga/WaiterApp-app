@@ -9,6 +9,8 @@ import { CartItem } from '../../types/CartItem';
 
 import { formatCurrency } from '../../utils/formatCurrency';
 
+import { Product } from '../../types/Product';
+
 import {
   Item,
   ProductContainer,
@@ -20,9 +22,16 @@ import {
 
 interface CartProps {
   cartItems: CartItem[];
+  onAdd: (product: Product) => void;
+  onDecrement: (product: Product) => void;
 }
 
-export function Cart({ cartItems }: CartProps) {
+export function Cart({ cartItems, onAdd, onDecrement }: CartProps) {
+  const totalPrice = cartItems.reduce((total, item) => {
+    return total + (item.product.price * item.quantity);
+  }, 0);
+
+
   return (
     <>
       {cartItems.length > 0 && (
@@ -56,10 +65,13 @@ export function Cart({ cartItems }: CartProps) {
               </ProductContainer>
 
               <Actions>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => onAdd(item.product)}>
                   <PlusCircle />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ marginLeft: 24 }}>
+                <TouchableOpacity
+                  style={{ marginLeft: 24 }}
+                  onPress={() => onDecrement(item.product)}
+                >
                   <MinusCircle />
                 </TouchableOpacity>
               </Actions>
@@ -70,7 +82,7 @@ export function Cart({ cartItems }: CartProps) {
       )}
 
       <SummaryWithAction
-        summary={['Total', 54]}
+        summary={['Total', totalPrice]}
         action={['Confirmar pedido', () => alert('Pedido confirmado')]}
         disabled={['Seu carrinho está vazio', cartItems.length <= 0]}
       />

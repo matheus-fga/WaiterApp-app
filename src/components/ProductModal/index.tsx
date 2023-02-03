@@ -20,10 +20,16 @@ interface ProductModal {
   visible: boolean;
   product: Product | null;
   onClose: () => void;
+  onAddToCart: (product: Product) => void;
 }
 
-export function ProductModal({ visible, onClose, product }: ProductModal) {
+export function ProductModal({ visible, onClose, product, onAddToCart }: ProductModal) {
   if (!product) return null;
+
+  function handleAddToCart() {
+    onAddToCart(product!);
+    onClose();
+  }
 
   return (
     <Modal
@@ -75,7 +81,7 @@ export function ProductModal({ visible, onClose, product }: ProductModal) {
       <Footer>
         <SummaryWithAction
           summary={['Preço', product.price]}
-          action={['Adiconar ao pedido', () => alert('Adiconado ao pedido')]}
+          action={['Adiconar ao pedido', () => handleAddToCart()]}
         />
       </Footer>
     </Modal>

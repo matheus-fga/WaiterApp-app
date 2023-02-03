@@ -11,7 +11,11 @@ import { ProductModal } from '../ProductModal';
 
 import { Product } from '../../types/Product';
 
-export function Menu() {
+interface MenuProps {
+  onAddToCart: (product: Product) => void;
+}
+
+export function Menu({ onAddToCart }: MenuProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedProduct, setIsSelectedProduct] = useState<Product | null>(null);
 
@@ -26,6 +30,7 @@ export function Menu() {
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         product={selectedProduct}
+        onAddToCart={onAddToCart}
       />
 
       <FlatList
@@ -50,7 +55,10 @@ export function Menu() {
               <Text size={14} weight="600">{formatCurrency(product.price)}</Text>
             </ProductDetails>
 
-            <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            <TouchableOpacity
+              style={{ alignSelf: 'flex-end' }}
+              onPress={() => onAddToCart(product)}
+            >
               <PlusCircle />
             </TouchableOpacity>
           </ProductContainer>
