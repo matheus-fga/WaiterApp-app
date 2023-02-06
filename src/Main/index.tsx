@@ -183,6 +183,7 @@ export function Main() {
             onAdd={handleAddTocart}
             onDecrement={handleDecrementCartItem}
             onConfirmOrder={handleResetOrder}
+            selectedTable={selectedTable}
           />
         )}
       </Footer>

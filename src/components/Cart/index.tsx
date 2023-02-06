@@ -12,6 +12,8 @@ import { Product } from '../../types/Product';
 
 import { formatCurrency } from '../../utils/formatCurrency';
 
+import { api } from '../../utils/api';
+
 import {
   Item,
   ProductContainer,
@@ -26,17 +28,29 @@ interface CartProps {
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
   onConfirmOrder: () => void;
+  selectedTable: string;
 }
 
-export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) {
+export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder, selectedTable }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const totalPrice = cartItems.reduce((total, item) => {
     return total + (item.product.price * item.quantity);
   }, 0);
 
-  function handleConfirmOrder() {
+  async function handleConfirmOrder() {
+    setIsLoading(true);
+
+    await api.post('/orders', {
+      table: selectedTable,
+      products: cartItems.map(item => ({
+        product: item.product._id,
+        quantity: item.quantity
+      }))
+    });
+
+    setIsLoading(false);
     setIsModalVisible(true);
   }
 
