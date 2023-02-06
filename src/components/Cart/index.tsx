@@ -30,6 +30,7 @@ interface CartProps {
 
 export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading] = useState(false);
 
   const totalPrice = cartItems.reduce((total, item) => {
     return total + (item.product.price * item.quantity);
@@ -100,7 +101,7 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProp
 
       <SummaryWithAction
         summary={['Total', totalPrice]}
-        action={['Confirmar pedido', () => handleConfirmOrder()]}
+        action={['Confirmar pedido', () => handleConfirmOrder(), isLoading]}
         disabled={['Seu carrinho está vazio', cartItems.length <= 0]}
       />
     </>

@@ -14,7 +14,8 @@ interface SummaryWithActionProps {
   ];
   action: [
     label: string,
-    onPress: () => void
+    onPress: () => void,
+    loadingCondition?: boolean
   ];
   disabled?: [
     label: string,
@@ -24,7 +25,7 @@ interface SummaryWithActionProps {
 
 export function SummaryWithAction({ summary, action, disabled = ['', false] }: SummaryWithActionProps) {
   const [summaryLabel, summaryValue] = summary;
-  const [actionLabel, onPress] = action;
+  const [actionLabel, onPress, isLoading] = action;
   const [disabledLabel, disableStatus] = disabled;
 
   return (
@@ -49,7 +50,11 @@ export function SummaryWithAction({ summary, action, disabled = ['', false] }: S
         )}
       </View>
 
-      <Button onPress={onPress} disabled={disableStatus}>
+      <Button
+        onPress={onPress}
+        disabled={disableStatus}
+        loading={isLoading}
+      >
         {actionLabel}
       </Button>
     </Container>
