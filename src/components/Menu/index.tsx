@@ -3,7 +3,6 @@ import { FlatList, TouchableOpacity } from 'react-native';
 
 import { ProductContainer, ProductImage, ProductDetails, ProductSeparator } from './styles';
 
-import { products } from '../../mocks/products';
 import { Text } from '../Text';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PlusCircle } from '../Icons/PlusCircle';
@@ -13,9 +12,10 @@ import { Product } from '../../types/Product';
 
 interface MenuProps {
   onAddToCart: (product: Product) => void;
+  products: Product[];
 }
 
-export function Menu({ onAddToCart }: MenuProps) {
+export function Menu({ onAddToCart, products }: MenuProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedProduct, setIsSelectedProduct] = useState<Product | null>(null);
 
