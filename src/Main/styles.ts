@@ -17,3 +17,9 @@ export const CategoriesContainer = styled.View`
 export const MenuContainer = styled.View`
   flex: 1;
 `;
+
+export const CenteredContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
