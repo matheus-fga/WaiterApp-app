@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { Container,
@@ -17,17 +17,30 @@ import { Cart } from '../components/Cart';
 import { Empty } from '../components/Icons/Empty';
 import { Text } from '../components/Text';
 
-import { products as mockedProducts } from '../mocks/products';
+import { api } from '../utils/api';
 
 import { CartItem } from '../types/CartItem';
 import { Product } from '../types/Product';
+import { Category } from '../types/Category';
 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading] = useState(false);
-  const [products] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    Promise.all([
+      api.get('/categories'),
+      api.get('/products')
+    ]).then((response) => {
+      setCategories(response[0].data);
+      setProducts(response[1].data);
+      setIsLoading(false);
+    });
+  }, []);
 
   function handleSaveTable(table: string) {
     setSelectedTable(table);
@@ -102,7 +115,9 @@ export function Main() {
         {!isLoading && (
           <>
             <CategoriesContainer>
-              <Categories />
+              <Categories
+                categories={categories}
+              />
             </CategoriesContainer>
 
             {products.length > 0 ? (
